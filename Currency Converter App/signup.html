@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - Currency Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fw-bold" style="box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Currency Converter</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="signup.html">Login / Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+            <h3 class="card-title text-center mb-4" id="auth-title">Sign Up</h3>
+            <div class="d-flex justify-content-center mb-4">
+              <button type="button" class="btn btn-outline-primary me-2" id="show-signup">Sign Up</button>
+              <button type="button" class="btn btn-outline-secondary" id="show-login">Login</button>
+            </div>
+            <form id="signup-form">
+              <div class="mb-3">
+                <label for="signup-username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="signup-username" required>
+              </div>
+              <div class="mb-3">
+                <label for="signup-email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="signup-email" required>
+              </div>
+              <div class="mb-3">
+                <label for="signup-password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="signup-password" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+            <form id="login-form" style="display:none;">
+              <div class="mb-3">
+                <label for="login-username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="login-username" required>
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="login-password" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div id="auth-result" class="mt-3 text-center"></div>
+            <button id="change-account-btn" class="btn btn-warning w-100 mt-3" style="display:none;">Change Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Show logged in state, allow change account
+        function showLoggedInUI(username) {
+          const authTitle = document.getElementById('auth-title');
+          const signupForm = document.getElementById('signup-form');
+          const loginForm = document.getElementById('login-form');
+          const showSignup = document.getElementById('show-signup');
+          const showLogin = document.getElementById('show-login');
+          const authResult = document.getElementById('auth-result');
+          const changeAccountBtn = document.getElementById('change-account-btn');
+          if (authTitle) authTitle.textContent = `Logged in as ${username}`;
+          if (signupForm) signupForm.style.display = 'none';
+          if (loginForm) loginForm.style.display = 'none';
+          if (showSignup) showSignup.disabled = true;
+          if (showLogin) showLogin.disabled = true;
+          if (authResult) authResult.textContent = `You are logged in as ${username}.`;
+          if (changeAccountBtn) changeAccountBtn.style.display = '';
+        }
+
+        if(localStorage.getItem('loggedIn') === 'true') {
+          const username = localStorage.getItem('username') || 'User';
+          showLoggedInUI(username);
+        }
+        // Toggle between login and signup forms using page buttons
+        var showSignupBtn = document.getElementById('show-signup');
+        if (showSignupBtn) {
+          showSignupBtn.addEventListener('click', function() {
+            var signupForm = document.getElementById('signup-form');
+            var loginForm = document.getElementById('login-form');
+            var authTitle = document.getElementById('auth-title');
+            var authResult = document.getElementById('auth-result');
+            if (signupForm) signupForm.style.display = '';
+            if (loginForm) loginForm.style.display = 'none';
+            if (authTitle) authTitle.textContent = 'Sign Up';
+            if (authResult) authResult.textContent = '';
+          });
+        }
+        var showLoginBtn = document.getElementById('show-login');
+        if (showLoginBtn) {
+          showLoginBtn.addEventListener('click', function() {
+            var signupForm = document.getElementById('signup-form');
+            var loginForm = document.getElementById('login-form');
+            var authTitle = document.getElementById('auth-title');
+            var authResult = document.getElementById('auth-result');
+            if (signupForm) signupForm.style.display = 'none';
+            if (loginForm) loginForm.style.display = '';
+            if (authTitle) authTitle.textContent = 'Login';
+            if (authResult) authResult.textContent = '';
+          });
+        }
+        // Signup logic
+        var signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+          signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            var showSignupBtn = document.getElementById('show-signup');
+            var showLoginBtn = document.getElementById('show-login');
+            var loginForm = document.getElementById('login-form');
+            var authResult = document.getElementById('auth-result');
+            if(username && email && password) {
+              localStorage.setItem('loggedIn', 'true');
+              localStorage.setItem('username', username);
+              if (authResult) authResult.textContent = `Account created! Logged in as ${username}.`;
+              if (showSignupBtn) showSignupBtn.disabled = true;
+              if (showLoginBtn) showLoginBtn.disabled = true;
+              signupForm.style.display = 'none';
+              if (loginForm) loginForm.style.display = 'none';
+              const changeAccountBtn = document.getElementById('change-account-btn');
+              if (changeAccountBtn) changeAccountBtn.style.display = '';
+              const authTitle = document.getElementById('auth-title');
+              if (authTitle) authTitle.textContent = `Logged in as ${username}`;
+            } else {
+              if (authResult) authResult.textContent = 'Please enter valid credentials.';
+            }
+          });
+        }
+        // Login logic
+        var loginForm = document.getElementById('login-form');
+        if (loginForm) {
+          loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            var showSignupBtn = document.getElementById('show-signup');
+            var showLoginBtn = document.getElementById('show-login');
+            var signupForm = document.getElementById('signup-form');
+            var authResult = document.getElementById('auth-result');
+            if(username && password && username === localStorage.getItem('username')) {
+              localStorage.setItem('loggedIn', 'true');
+              if (authResult) authResult.textContent = `Login successful! Logged in as ${username}.`;
+              if (showSignupBtn) showSignupBtn.disabled = true;
+              if (showLoginBtn) showLoginBtn.disabled = true;
+              if (signupForm) signupForm.style.display = 'none';
+              loginForm.style.display = 'none';
+              const changeAccountBtn = document.getElementById('change-account-btn');
+              if (changeAccountBtn) changeAccountBtn.style.display = '';
+              const authTitle = document.getElementById('auth-title');
+              if (authTitle) authTitle.textContent = `Logged in as ${username}`;
+            } else {
+              if (authResult) authResult.textContent = 'Invalid username or password.';
+            }
+          });
+        }
+        // Change Account logic
+        var changeAccountBtn = document.getElementById('change-account-btn');
+        if (changeAccountBtn) {
+          changeAccountBtn.addEventListener('click', function() {
+            localStorage.setItem('loggedIn', 'false');
+            localStorage.removeItem('username');
+            // Reset UI to show signup/login
+            const signupForm = document.getElementById('signup-form');
+            const loginForm = document.getElementById('login-form');
+            const showSignup = document.getElementById('show-signup');
+            const showLogin = document.getElementById('show-login');
+            const authResult = document.getElementById('auth-result');
+            const authTitle = document.getElementById('auth-title');
+            if (signupForm) signupForm.style.display = '';
+            if (loginForm) loginForm.style.display = 'none';
+            if (showSignup) showSignup.disabled = false;
+            if (showLogin) showLogin.disabled = false;
+            if (authResult) authResult.textContent = 'You have logged out. Please sign up or log in.';
+            if (authTitle) authTitle.textContent = 'Sign Up';
+            changeAccountBtn.style.display = 'none';
+          });
+        }
+      });
+    </script>
+</body>
+</html>
