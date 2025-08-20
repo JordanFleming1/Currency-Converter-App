@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Currency Converter</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <script>
+    // Show signup/login button if not logged in
+    if (!localStorage.getItem('loggedIn') || localStorage.getItem('loggedIn') !== 'true') {
+      document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.container');
+        container.innerHTML = `
+          <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+              <div class="card p-4 shadow text-center">
+                <h2 class="mb-4">You must login or sign up to use settings.</h2>
+                <a href="signup.html" class="btn btn-primary btn-lg">Go to Login / Sign Up</a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+  </script>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main navigation" style="box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">Currency Converter</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-bold" href="index.html" data-translate="Home">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="about.html" data-translate="About">About</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="settings.html" data-translate="Settings">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card p-4 shadow">
+          <h2 class="mb-4 text-center" data-translate="Settings">Settings</h2>
+          <form id="settings-form">
+            <h4 class="mb-3" data-translate="Profile Management">Profile Management</h4>
+            <div class="mb-3">
+              <label for="settings-username" class="form-label" data-translate="Username"></label>
+              <input type="text" class="form-control" id="settings-username" required>
+            </div>
+            <div class="mb-3">
+              <label for="settings-email" class="form-label" data-translate="Email"></label>
+              <input type="email" class="form-control" id="settings-email" required>
+            </div>
+            <div class="mb-3">
+              <label for="settings-password" class="form-label" data-translate="Password"></label>
+              <input type="password" class="form-control" id="settings-password" required>
+            </div>
+            <button type="button" class="btn btn-primary mb-3 w-100" id="update-profile" data-translate="Update Profile">Update Profile</button>
+            <button type="button" class="btn btn-danger mb-3 w-100" id="clear-history" data-translate="Clear Conversion History">Clear Conversion History</button>
+            <button type="button" class="btn btn-warning mb-3 w-100" id="export-data" data-translate="Export My Data">Export My Data</button>
+            <h4 class="mb-3" data-translate="Preferences">Preferences</h4>
+            <div class="mb-3">
+              <label for="default-from" class="form-label" data-translate="Default From Currency">Default From Currency</label>
+              <select class="form-select" id="default-from"></select>
+            </div>
+            <div class="mb-3">
+              <label for="default-to" class="form-label" data-translate="Default To Currency">Default To Currency</label>
+              <select class="form-select" id="default-to"></select>
+            </div>
+            <div class="mb-3">
+              <label for="default-country" class="form-label" data-translate="Default Country">Default Country</label>
+              <input type="text" class="form-control" id="default-country">
+            </div>
+            <div class="mb-3">
+              <label for="default-city" class="form-label" data-translate="Default City">Default City</label>
+              <input type="text" class="form-control" id="default-city">
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="dark-mode-toggle">
+              <label class="form-check-label" for="dark-mode-toggle" data-translate="Enable Dark Mode">Enable Dark Mode</label>
+            </div>
+            <div class="mb-3">
+              <label for="color-blind-mode" class="form-label">Color Blind Mode</label>
+              <select class="form-select" id="color-blind-mode">
+                <option value="none">None</option>
+                <option value="protanopia">Protanopia (Red-Blind)</option>
+                <option value="deuteranopia">Deuteranopia (Green-Blind)</option>
+                <option value="tritanopia">Tritanopia (Blue-Blind)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="language-select" class="form-label" data-translate="Language">Language</label>
+              <select class="form-select" id="language-select">
+                <option value="en">English</option>
+                <option value="ceb">Cebuano</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="zh">Chinese</option>
+              </select>
+            </div>
+            <h4 class="mb-3">Accessibility</h4>
+            <div class="mb-3">
+              <label for="font-size" class="form-label" data-translate="Font Size">Font Size</label>
+              <select class="form-select" id="font-size">
+                <option value="normal">Normal</option>
+                <option value="large">Large</option>
+                <option value="xlarge">Extra Large</option>
+              </select>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="high-contrast-toggle">
+              <label class="form-check-label" for="high-contrast-toggle" data-translate="Enable High Contrast Mode">Enable High Contrast Mode</label>
+            </div>
+            <h4 class="mb-3" data-translate="Data & Privacy">Data & Privacy</h4>
+            <button type="button" class="btn btn-danger mb-3 w-100" id="clear-data" data-translate="Clear All My Data">Clear All My Data</button>
+            <a href="#" class="btn btn-secondary w-100 mb-3" id="privacy-policy" data-translate="View Privacy Policy">View Privacy Policy</a>
+          </form>
+          <div id="settings-result" class="mt-3 text-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Simple translation dictionary
+    const translations = {
+      en: {
+        'Settings': 'Settings',
+        'Profile Management': 'Profile Management',
+        'Username': 'Username',
+        'Email': 'Email',
+        'Password': 'Password',
+        'Update Profile': 'Update Profile',
+        'Clear Conversion History': 'Clear Conversion History',
+        'Export My Data': 'Export My Data',
+        'Preferences': 'Preferences',
+        'Default From Currency': 'Default From Currency',
+        'Default To Currency': 'Default To Currency',
+        'Default Country': 'Default Country',
+        'Default City': 'Default City',
+        'Enable Dark Mode': 'Enable Dark Mode',
+        'Language': 'Language',
+        'Font Size': 'Font Size',
+        'Enable High Contrast Mode': 'Enable High Contrast Mode',
+        'Data & Privacy': 'Data & Privacy',
+        'Clear All My Data': 'Clear All My Data',
+        'View Privacy Policy': 'View Privacy Policy'
+  , 'Home': 'Home',
+  'About': 'About'
+      },
+      ceb: {
+        'Settings': 'Mga Setting',
+        'Profile Management': 'Pagdumala sa Profile',
+        'Username': 'Username',
+        'Email': 'Email',
+        'Password': 'Password',
+        'Update Profile': 'I-update ang Profile',
+        'Clear Conversion History': 'Limpyohi ang Kasaysayan sa Pagbalhin',
+        'Export My Data': 'I-export ang Akong Datos',
+        'Preferences': 'Mga Paborito',
+        'Default From Currency': 'Default nga Gikan nga Salapi',
+        'Default To Currency': 'Default nga Padulong nga Salapi',
+        'Default Country': 'Default nga Nasud',
+        'Default City': 'Default nga Siyudad',
+        'Enable Dark Mode': 'I-enable ang Dark Mode',
+        'Language': 'Pinulongan',
+        'Font Size': 'Kadak-on sa Font',
+        'Enable High Contrast Mode': 'I-enable ang High Contrast Mode',
+        'Data & Privacy': 'Datos ug Privacy',
+        'Clear All My Data': 'Limpyohi ang Tanan Akong Datos',
+        'View Privacy Policy': 'Tan-awa ang Privacy Policy'
+  , 'Home': 'Balay',
+  'About': 'Mahitungod'
+      },
+      es: {
+        'Settings': 'Configuración',
+        'Profile Management': 'Gestión de perfil',
+        'Username': 'Usuario',
+        'Email': 'Correo electrónico',
+        'Password': 'Contraseña',
+        'Update Profile': 'Actualizar perfil',
+        'Clear Conversion History': 'Borrar historial de conversiones',
+        'Export My Data': 'Exportar mis datos',
+        'Preferences': 'Preferencias',
+        'Default From Currency': 'Moneda de origen predeterminada',
+        'Default To Currency': 'Moneda de destino predeterminada',
+        'Default Country': 'País predeterminado',
+        'Default City': 'Ciudad predeterminada',
+        'Enable Dark Mode': 'Activar modo oscuro',
+        'Language': 'Idioma',
+        'Font Size': 'Tamaño de fuente',
+        'Enable High Contrast Mode': 'Activar modo alto contraste',
+        'Data & Privacy': 'Datos y privacidad',
+        'Clear All My Data': 'Borrar todos mis datos',
+        'View Privacy Policy': 'Ver política de privacidad'
+      },
+      fr: {
+        'Settings': 'Paramètres',
+        'Profile Management': 'Gestion du profil',
+        'Username': 'Nom d’utilisateur',
+        'Email': 'E-mail',
+        'Password': 'Mot de passe',
+        'Update Profile': 'Mettre à jour le profil',
+        'Clear Conversion History': 'Effacer l’historique des conversions',
+        'Export My Data': 'Exporter mes données',
+        'Preferences': 'Préférences',
+        'Default From Currency': 'Devise d’origine par défaut',
+        'Default To Currency': 'Devise de destination par défaut',
+        'Default Country': 'Pays par défaut',
+        'Default City': 'Ville par défaut',
+        'Enable Dark Mode': 'Activer le mode sombre',
+        'Language': 'Langue',
+        'Font Size': 'Taille de police',
+        'Enable High Contrast Mode': 'Activer le mode contraste élevé',
+        'Data & Privacy': 'Données et confidentialité',
+        'Clear All My Data': 'Effacer toutes mes données',
+        'View Privacy Policy': 'Voir la politique de confidentialité'
+      },
+      de: {
+        'Settings': 'Einstellungen',
+        'Profile Management': 'Profilverwaltung',
+        'Username': 'Benutzername',
+        'Email': 'E-Mail',
+        'Password': 'Passwort',
+        'Update Profile': 'Profil aktualisieren',
+        'Clear Conversion History': 'Konvertierungshistorie löschen',
+        'Export My Data': 'Meine Daten exportieren',
+        'Preferences': 'Einstellungen',
+        'Default From Currency': 'Standard-Ausgangswährung',
+        'Default To Currency': 'Standard-Zielwährung',
+        'Default Country': 'Standardland',
+        'Default City': 'Standardstadt',
+        'Enable Dark Mode': 'Dunkelmodus aktivieren',
+        'Language': 'Sprache',
+        'Font Size': 'Schriftgröße',
+        'Enable High Contrast Mode': 'Hoher Kontrast aktivieren',
+        'Data & Privacy': 'Daten & Datenschutz',
+        'Clear All My Data': 'Alle meine Daten löschen',
+        'View Privacy Policy': 'Datenschutzrichtlinie anzeigen'
+      },
+      zh: {
+        'Settings': '设置',
+        'Profile Management': '个人资料管理',
+        'Username': '用户名',
+        'Email': '电子邮件',
+        'Password': '密码',
+        'Update Profile': '更新个人资料',
+        'Clear Conversion History': '清除兑换历史',
+        'Export My Data': '导出我的数据',
+        'Preferences': '偏好',
+        'Default From Currency': '默认源货币',
+        'Default To Currency': '默认目标货币',
+        'Default Country': '默认国家',
+        'Default City': '默认城市',
+        'Enable Dark Mode': '启用深色模式',
+        'Language': '语言',
+        'Font Size': '字体大小',
+        'Enable High Contrast Mode': '启用高对比度模式',
+        'Data & Privacy': '数据和隐私',
+        'Clear All My Data': '清除我的所有数据',
+        'View Privacy Policy': '查看隐私政策'
+      }
+    };
+
+    function translateUI(lang) {
+      const dict = translations[lang] || translations['en'];
+      // Translate headings and labels
+      document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (dict[key]) el.textContent = dict[key];
+      });
+    }
+
+    // On language change, translate UI
+    document.getElementById('language-select').addEventListener('change', function() {
+      translateUI(this.value);
+    });
+
+    // On page load, translate UI to selected language
+    document.addEventListener('DOMContentLoaded', function() {
+      const lang = document.getElementById('language-select').value;
+      translateUI(lang);
+    });
+    // Supported currencies for dropdowns
+    const supportedCurrencies = [
+      'USD','EUR','GBP','JPY','AUD','CAD','CHF','CNY','SGD','INR','KRW','PHP','NZD','MXN','ZAR','BRL','TRY','SEK','NOK','DKK','PLN','THB','IDR','MYR','CZK','HUF','ILS'
+    ];
+    function fillCurrencyDropdown(id) {
+      const select = document.getElementById(id);
+      select.innerHTML = '';
+      supportedCurrencies.forEach(cur => {
+        const opt = document.createElement('option');
+        opt.value = cur;
+        opt.textContent = cur;
+        select.appendChild(opt);
+      });
+    }
+    fillCurrencyDropdown('default-from');
+    fillCurrencyDropdown('default-to');
+
+    // Load settings from localStorage
+    function loadSettings() {
+      const username = localStorage.getItem('username') || '';
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.username === username) || {};
+      document.getElementById('settings-username').value = user.username || '';
+      document.getElementById('settings-email').value = user.email || '';
+      document.getElementById('settings-password').value = user.password || '';
+      // Load preferences from profile
+      let profile = JSON.parse(localStorage.getItem(`profile_${username}`) || '{}');
+  document.getElementById('default-from').value = profile.defaultFrom || 'USD';
+  document.getElementById('default-to').value = profile.defaultTo || 'EUR';
+  document.getElementById('default-country').value = profile.defaultCountry || '';
+  document.getElementById('default-city').value = profile.defaultCity || '';
+  document.getElementById('dark-mode-toggle').checked = profile.darkMode === true;
+  document.getElementById('color-blind-mode').value = profile.colorBlindMode || 'none';
+  document.getElementById('language-select').value = profile.language || 'en';
+  document.getElementById('font-size').value = profile.fontSize || 'normal';
+  document.getElementById('high-contrast-toggle').checked = profile.highContrast === true;
+      // Apply color blind mode to settings page
+      document.body.classList.remove('protanopia', 'deuteranopia', 'tritanopia');
+      if (profile.colorBlindMode === 'protanopia') {
+        document.body.classList.add('protanopia');
+      } else if (profile.colorBlindMode === 'deuteranopia') {
+        document.body.classList.add('deuteranopia');
+      } else if (profile.colorBlindMode === 'tritanopia') {
+        document.body.classList.add('tritanopia');
+      }
+      // Apply dark mode to settings page if enabled
+      if (profile.darkMode === true) {
+        document.body.classList.add('dark-mode');
+        document.querySelectorAll('.navbar').forEach(el => el.classList.add('dark-mode'));
+        document.querySelectorAll('.card').forEach(el => el.classList.add('dark-mode'));
+        document.querySelectorAll('.form-control').forEach(el => el.classList.add('dark-mode'));
+        document.querySelectorAll('.btn-outline-light').forEach(el => el.classList.add('dark-mode'));
+      }
+    }
+    loadSettings();
+
+    // Save settings to localStorage
+    function saveSettings() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+  let profile = JSON.parse(localStorage.getItem(`profile_${username}`) || '{}');
+  profile.defaultFrom = document.getElementById('default-from').value;
+  profile.defaultTo = document.getElementById('default-to').value;
+  profile.defaultCountry = document.getElementById('default-country').value;
+  profile.defaultCity = document.getElementById('default-city').value;
+  profile.darkMode = document.getElementById('dark-mode-toggle').checked;
+  profile.language = document.getElementById('language-select').value;
+  profile.fontSize = document.getElementById('font-size').value;
+  profile.highContrast = document.getElementById('high-contrast-toggle').checked;
+  localStorage.setItem(`profile_${username}` , JSON.stringify(profile));
+    }
+
+    document.getElementById('update-profile').onclick = function() {
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+      const oldUsername = localStorage.getItem('username');
+      const username = document.getElementById('settings-username').value.trim();
+      const email = document.getElementById('settings-email').value.trim();
+      const password = document.getElementById('settings-password').value;
+      // Find current user
+      const currentUser = users.find(u => u.username === oldUsername) || {};
+      // Check for changes
+      const changed = (username !== currentUser.username) || (email !== currentUser.email) || (password !== currentUser.password);
+      // Prevent duplicate username/email
+      if (users.some(u => u.username === username && u.username !== oldUsername)) {
+        document.getElementById('settings-result').textContent = 'Username already exists.';
+        return;
+      }
+      if (users.some(u => u.email === email && u.username !== oldUsername)) {
+        document.getElementById('settings-result').textContent = 'Email already exists.';
+        return;
+      }
+      // Always save preferences to profile
+      let profile = JSON.parse(localStorage.getItem(`profile_${oldUsername}`) || '{}');
+      const newPrefs = {
+        defaultFrom: document.getElementById('default-from').value,
+        defaultTo: document.getElementById('default-to').value,
+        defaultCountry: document.getElementById('default-country').value,
+        defaultCity: document.getElementById('default-city').value,
+        darkMode: document.getElementById('dark-mode-toggle').checked,
+        colorBlindMode: document.getElementById('color-blind-mode').value,
+        language: document.getElementById('language-select').value,
+        fontSize: document.getElementById('font-size').value,
+        highContrast: document.getElementById('high-contrast-toggle').checked
+      };
+      let prefsChanged = false;
+      for (const key in newPrefs) {
+        if (profile[key] !== newPrefs[key]) prefsChanged = true;
+        profile[key] = newPrefs[key];
+      }
+      // If username changed, migrate profile to new key
+      if (username !== oldUsername) {
+        localStorage.removeItem(`profile_${oldUsername}`);
+        localStorage.setItem(`profile_${username}`, JSON.stringify(profile));
+      } else {
+        localStorage.setItem(`profile_${username}`, JSON.stringify(profile));
+      }
+      // Immediately apply color blind mode
+      document.body.classList.remove('protanopia', 'deuteranopia', 'tritanopia');
+      if (profile.colorBlindMode === 'protanopia') {
+        document.body.classList.add('protanopia');
+      } else if (profile.colorBlindMode === 'deuteranopia') {
+        document.body.classList.add('deuteranopia');
+      } else if (profile.colorBlindMode === 'tritanopia') {
+        document.body.classList.add('tritanopia');
+      }
+      // Always redirect to home after update
+      window.location.href = 'index.html';
+    };
+
+    document.getElementById('clear-history').onclick = function() {
+      const username = localStorage.getItem('username');
+      if (!username) return;
+      let profile = JSON.parse(localStorage.getItem(`profile_${username}`) || '{}');
+      profile.conversions = [];
+      localStorage.setItem(`profile_${username}`, JSON.stringify(profile));
+      document.getElementById('settings-result').textContent = 'Conversion history cleared!';
+    };
+
+    document.getElementById('export-data').onclick = function() {
+      const username = localStorage.getItem('username');
+      if (!username) return;
+      let profile = localStorage.getItem(`profile_${username}`) || '{}';
+      const blob = new Blob([profile], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${username}_profile.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      document.getElementById('settings-result').textContent = 'Data exported!';
+    };
+
+    document.getElementById('clear-data').onclick = function() {
+      if (confirm('Are you sure you want to clear all your data? This cannot be undone.')) {
+        const username = localStorage.getItem('username');
+        if (username) {
+          localStorage.removeItem(`profile_${username}`);
+        }
+        localStorage.removeItem('username');
+        localStorage.removeItem('loggedIn');
+        document.getElementById('settings-result').textContent = 'All your data has been cleared.';
+      }
+    };
+
+    document.getElementById('dark-mode-toggle').onchange = function() {
+      document.body.classList.toggle('dark-mode', this.checked);
+      saveSettings();
+    };
+    document.getElementById('font-size').onchange = function() {
+      const size = this.value;
+      document.body.style.fontSize = size === 'normal' ? '' : (size === 'large' ? '1.2rem' : '1.4rem');
+      saveSettings();
+    };
+    document.getElementById('high-contrast-toggle').onchange = function() {
+      document.body.classList.toggle('high-contrast', this.checked);
+      saveSettings();
+    };
+    document.getElementById('privacy-policy').onclick = function(e) {
+      e.preventDefault();
+      alert('Your data is stored locally in your browser. No information is sent to any server.');
+    };
+  </script>
+</body>
+</html>

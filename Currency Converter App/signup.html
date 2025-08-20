@@ -1,6 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+      const translations = {
+        en: {
+          'Home': 'Home',
+          'About': 'About',
+          'Login / Sign Up': 'Login / Sign Up',
+          'Settings': 'Settings',
+          'Sign Up or Login to Currency Converter': 'Sign Up or Login to Currency Converter',
+          'Sign Up': 'Sign Up',
+          'Login': 'Login',
+          'Username': 'Username',
+          'Email address': 'Email address',
+          'Password': 'Password',
+          'Change account': 'Change account',
+          'Dark Mode': 'Dark Mode',
+          'Light Mode': 'Light Mode',
+        },
+        ceb: {
+          'Home': 'Balay',
+          'About': 'Mahitungod',
+          'Login / Sign Up': 'Login / Pagparehistro',
+          'Settings': 'Mga Setting',
+          'Sign Up or Login to Currency Converter': 'Pagparehistro o Pag-login sa Currency Converter',
+          'Sign Up': 'Pagparehistro',
+          'Login': 'Pag-login',
+          'Username': 'Username',
+          'Email address': 'Email address',
+          'Password': 'Password',
+          'Change account': 'Usba ang account',
+          'Dark Mode': 'Dark Mode',
+          'Light Mode': 'Hayag nga Mode',
+        }
+      };
+      function translateUI(lang) {
+        const dict = translations[lang] || translations['en'];
+        document.querySelectorAll('[data-translate]').forEach(el => {
+          const key = el.getAttribute('data-translate');
+          if (dict[key]) el.textContent = dict[key];
+        });
+        if (document.getElementById('darkModeToggle')) {
+          document.getElementById('darkModeToggle').textContent = dict[document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode'];
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        let lang = 'en';
+        const username = localStorage.getItem('username');
+        if (username) {
+          let profile = JSON.parse(localStorage.getItem(`profile_${username}`) || '{}');
+          if (profile.language) lang = profile.language;
+        }
+        translateUI(lang);
+      });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login / Sign Up - Currency Converter</title>
@@ -8,7 +61,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fw-bold" style="box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main navigation" style="box-shadow:0 2px 8px rgba(0,0,0,0.05);">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="index.html">Currency Converter</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,56 +70,62 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="index.html">Home</a>
+                        <a class="nav-link fw-bold" href="index.html" data-translate="Home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="about.html">About</a>
+                        <a class="nav-link fw-bold" href="about.html" data-translate="About">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="signup.html">Login / Sign Up</a>
+                        <a class="nav-link fw-bold" href="signup.html" data-translate="Login / Sign Up">Login / Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="settings.html" data-translate="Settings">Settings</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <div class="container-fluid mt-2 mb-2 text-end">
+        <button id="darkModeToggle" class="btn btn-outline-light" aria-label="Toggle dark mode">Dark Mode</button>
+    </div>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-            <h3 class="card-title text-center mb-4" id="auth-title">Sign Up</h3>
+            <h3 class="card-title text-center mb-4" id="auth-title" data-translate="Sign Up or Login to Currency Converter">Sign Up or Login to Currency Converter</h3>
             <div class="d-flex justify-content-center mb-4">
-              <button type="button" class="btn btn-outline-primary me-2" id="show-signup">Sign Up</button>
-              <button type="button" class="btn btn-outline-secondary" id="show-login">Login</button>
+              <button type="button" class="btn btn-outline-primary me-2" id="show-signup" data-translate="Sign Up">Sign Up</button>
+              <button type="button" class="btn btn-outline-secondary" id="show-login" data-translate="Login">Login</button>
             </div>
-            <form id="signup-form">
+            <form id="signup-form" aria-label="Sign up form">
               <div class="mb-3">
-                <label for="signup-username" class="form-label">Username</label>
+                <label for="signup-username" class="form-label" data-translate="Username"></label>
                 <input type="text" class="form-control" id="signup-username" required>
               </div>
               <div class="mb-3">
-                <label for="signup-email" class="form-label">Email address</label>
+                <label for="signup-email" class="form-label" data-translate="Email address"></label>
                 <input type="email" class="form-control" id="signup-email" required>
               </div>
               <div class="mb-3">
-                <label for="signup-password" class="form-label">Password</label>
+                <label for="signup-password" class="form-label" data-translate="Password"></label>
                 <input type="password" class="form-control" id="signup-password" required>
               </div>
-              <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+              <button type="submit" class="btn btn-primary w-100" aria-label="Sign up" data-translate="Sign Up">Sign Up</button>
             </form>
-            <form id="login-form" style="display:none;">
+            <form id="login-form" style="display:none;" aria-label="Login form">
               <div class="mb-3">
-                <label for="login-username" class="form-label">Username</label>
+                <label for="login-username" class="form-label" data-translate="Username"></label>
                 <input type="text" class="form-control" id="login-username" required>
               </div>
               <div class="mb-3">
-                <label for="login-password" class="form-label">Password</label>
+                <label for="login-password" class="form-label" data-translate="Password"></label>
                 <input type="password" class="form-control" id="login-password" required>
               </div>
-              <button type="submit" class="btn btn-primary w-100">Login</button>
+              <button type="submit" class="btn btn-primary w-100" aria-label="Login" data-translate="Login">Login</button>
             </form>
             <div id="auth-result" class="mt-3 text-center"></div>
-            <button id="change-account-btn" class="btn btn-warning w-100 mt-3" style="display:none;">Change Account</button>
+            <button id="change-account-btn" class="btn btn-warning w-100 mt-3" style="display:none;" aria-label="Change account" data-translate="Change account">Change Account</button>
                     </div>
                 </div>
             </div>
@@ -74,6 +133,44 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // ===============================
+      // Signup/Login Page Scripts
+      // ===============================
+
+      // SECTION: Dark Mode Toggle
+      // Handles dark mode button and state
+      function setDarkMode(enabled) {
+        document.body.classList.toggle('dark-mode', enabled);
+        document.querySelectorAll('.navbar').forEach(el => el.classList.toggle('dark-mode', enabled));
+        document.querySelectorAll('.card').forEach(el => el.classList.toggle('dark-mode', enabled));
+        document.querySelectorAll('.form-control').forEach(el => el.classList.toggle('dark-mode', enabled));
+        document.querySelectorAll('#darkModeToggle').forEach(el => el.classList.toggle('dark-mode', enabled));
+        localStorage.setItem('darkMode', enabled ? 'true' : 'false');
+        document.getElementById('darkModeToggle').textContent = enabled ? 'Light Mode' : 'Dark Mode';
+      }
+      document.getElementById('darkModeToggle').addEventListener('click', function() {
+        const enabled = document.body.classList.contains('dark-mode');
+        setDarkMode(!enabled);
+      });
+      // On load, set mode from localStorage
+      if(localStorage.getItem('darkMode') === 'true') {
+        setDarkMode(true);
+      }
+
+      // SECTION: UI Initialization
+      // Loads dark mode from localStorage
+      document.addEventListener('DOMContentLoaded', function() {
+        let lang = 'en';
+        const username = localStorage.getItem('username');
+        if (username) {
+          let profile = JSON.parse(localStorage.getItem(`profile_${username}`) || '{}');
+          if (profile.language) lang = profile.language;
+        }
+        translateUI(lang);
+      });
+
+      // SECTION: Signup/Login Form Logic
+      // Handles signup and login form submission
       document.addEventListener('DOMContentLoaded', function() {
         // Show logged in state, allow change account
         function showLoggedInUI(username) {
@@ -99,6 +196,20 @@
         }
         // Toggle between login and signup forms using page buttons
         var showSignupBtn = document.getElementById('show-signup');
+        var showLoginBtn = document.getElementById('show-login');
+        function setActiveButton(active) {
+          if (active === 'signup') {
+            showSignupBtn.classList.remove('btn-outline-secondary');
+            showSignupBtn.classList.add('btn-outline-primary');
+            showLoginBtn.classList.remove('btn-outline-primary');
+            showLoginBtn.classList.add('btn-outline-secondary');
+          } else {
+            showLoginBtn.classList.remove('btn-outline-secondary');
+            showLoginBtn.classList.add('btn-outline-primary');
+            showSignupBtn.classList.remove('btn-outline-primary');
+            showSignupBtn.classList.add('btn-outline-secondary');
+          }
+        }
         if (showSignupBtn) {
           showSignupBtn.addEventListener('click', function() {
             var signupForm = document.getElementById('signup-form');
@@ -109,9 +220,9 @@
             if (loginForm) loginForm.style.display = 'none';
             if (authTitle) authTitle.textContent = 'Sign Up';
             if (authResult) authResult.textContent = '';
+            setActiveButton('signup');
           });
         }
-        var showLoginBtn = document.getElementById('show-login');
         if (showLoginBtn) {
           showLoginBtn.addEventListener('click', function() {
             var signupForm = document.getElementById('signup-form');
@@ -122,21 +233,36 @@
             if (loginForm) loginForm.style.display = '';
             if (authTitle) authTitle.textContent = 'Login';
             if (authResult) authResult.textContent = '';
+            setActiveButton('login');
           });
         }
+        // Set initial active button
+        setActiveButton('signup');
         // Signup logic
         var signupForm = document.getElementById('signup-form');
         if (signupForm) {
           signupForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = document.getElementById('signup-username').value;
-            const email = document.getElementById('signup-email').value;
+            const username = document.getElementById('signup-username').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value;
             var showSignupBtn = document.getElementById('show-signup');
             var showLoginBtn = document.getElementById('show-login');
             var loginForm = document.getElementById('login-form');
             var authResult = document.getElementById('auth-result');
+            // Check for duplicate username or email
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.some(u => u.username === username)) {
+              if (authResult) authResult.textContent = 'Username already exists.';
+              return;
+            }
+            if (users.some(u => u.email === email)) {
+              if (authResult) authResult.textContent = 'Email already exists.';
+              return;
+            }
             if(username && email && password) {
+              users.push({username, email, password});
+              localStorage.setItem('users', JSON.stringify(users));
               localStorage.setItem('loggedIn', 'true');
               localStorage.setItem('username', username);
               if (authResult) authResult.textContent = `Account created! Logged in as ${username}.`;
@@ -158,14 +284,17 @@
         if (loginForm) {
           loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = document.getElementById('login-username').value;
+            const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value;
             var showSignupBtn = document.getElementById('show-signup');
             var showLoginBtn = document.getElementById('show-login');
             var signupForm = document.getElementById('signup-form');
             var authResult = document.getElementById('auth-result');
-            if(username && password && username === localStorage.getItem('username')) {
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+            if(user) {
               localStorage.setItem('loggedIn', 'true');
+              localStorage.setItem('username', username);
               if (authResult) authResult.textContent = `Login successful! Logged in as ${username}.`;
               if (showSignupBtn) showSignupBtn.disabled = true;
               if (showLoginBtn) showLoginBtn.disabled = true;

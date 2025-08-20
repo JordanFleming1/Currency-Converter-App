@@ -1,5 +1,60 @@
+/* Ensure navbar brand (logo) is black in color blind modes */
+body.protanopia .navbar-brand,
+body.deuteranopia .navbar-brand,
+body.tritanopia .navbar-brand {
+  color: #111 !important;
+}
+/* Ensure navbar text is black in color blind modes */
+body.protanopia .navbar-nav .nav-link,
+body.deuteranopia .navbar-nav .nav-link,
+body.tritanopia .navbar-nav .nav-link {
+  color: #111 !important;
+}
+/* Color Blind Modes */
+body.protanopia {
+  /* Red-blind: avoid reds, use blue/yellow/gray */
+  filter: url('#protanopia-filter');
+  background-color: #f7f7f7 !important;
+}
+body.protanopia .btn-primary {
+  background-color: #0072b2 !important;
+  color: #fff !important;
+}
+body.protanopia .navbar, body.protanopia .card {
+  background-color: #e6e6e6 !important;
+  color: #222 !important;
+}
+
+body.deuteranopia {
+  /* Green-blind: avoid greens, use blue/orange/gray */
+  filter: url('#deuteranopia-filter');
+  background-color: #f7f7f7 !important;
+}
+body.deuteranopia .btn-primary {
+  background-color: #ff9900 !important;
+  color: #fff !important;
+}
+body.deuteranopia .navbar, body.deuteranopia .card {
+  background-color: #e6e6e6 !important;
+  color: #222 !important;
+}
+
+body.tritanopia {
+  /* Blue-blind: avoid blues, use red/yellow/gray */
+  filter: url('#tritanopia-filter');
+  background-color: #f7f7f7 !important;
+}
+body.tritanopia .btn-primary {
+  background-color: #e41a1c !important;
+  color: #fff !important;
+}
+body.tritanopia .navbar, body.tritanopia .card {
+  background-color: #e6e6e6 !important;
+  color: #222 !important;
+}
 body {
     background-color: #f8f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .card {
@@ -19,4 +74,129 @@ body {
 #result {
     font-size: 1.2rem;
     color: #333;
+}
+
+body.dark-mode {
+  background-color: #181a1b !important;
+  color: #e0e0e0 !important;
+}
+
+.navbar {
+  font-size: 1.1rem;
+}
+
+.navbar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar-nav .nav-link:focus, .navbar-nav .nav-link:hover {
+  background: #007bff;
+  color: #fff;
+  outline: none;
+}
+
+.navbar.dark-mode, .navbar.bg-primary.dark-mode {
+  background-color: #23272b !important;
+}
+
+.card.dark-mode {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+}
+
+.form-control {
+  background-color: #fff;
+  color: #222;
+}
+
+body.dark-mode .form-control {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .form-control#amount {
+  background-color: #fff !important;
+  color: #222 !important;
+  border-color: #444 !important;
+}
+
+.btn-outline-light.dark-mode {
+  color: #e0e0e0 !important;
+  border-color: #e0e0e0 !important;
+}
+
+#darkModeToggle {
+  border: 2px solid #222 !important;
+  color: #222 !important;
+  background: #fff !important;
+}
+body.dark-mode #darkModeToggle {
+  border: 2px solid #e0e0e0 !important;
+  color: #e0e0e0 !important;
+  background: #23272b !important;
+}
+body.dark-mode #result {
+  color: #fff !important;
+}
+body.dark-mode #city-search .form-control,
+body.dark-mode #city-search input[type="text"] {
+  background-color: #fff !important;
+  color: #222 !important;
+  border-color: #444 !important;
+}
+body.dark-mode #city-search .btn-primary {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border-color: #007bff !important;
+}
+#city-search .btn-primary {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border-color: #007bff !important;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+#city-search input[type="text"] {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+@media (max-width: 991px) {
+  .navbar-nav {
+    text-align: center;
+  }
+  .navbar-nav .nav-link {
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .container, .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+@media (max-width: 575px) {
+  .btn, .form-control, .form-select {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+  }
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+input, select, button {
+  font-size: 1rem;
+}
+input:focus, select:focus, button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+.btn-primary, .btn-outline-light, .btn-warning {
+  border-width: 2px;
+  font-weight: 600;
 }
