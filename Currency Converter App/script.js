@@ -359,14 +359,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return localStorage.getItem('username');
     }
     function getUserProfile(username) {
-        const profile = localStorage.getItem(`profile_${username}`);
-        if (profile) return JSON.parse(profile);
-        // Default profile structure
-        return {
-            conversions: [], // {from, to, amount, result, date}
-            favorites: [],   // currency codes
-            atmSearches: [] // {city, country, date}
-        };
+    const profileStr = localStorage.getItem(`profile_${username}`);
+    let profile = profileStr ? JSON.parse(profileStr) : {};
+    // Ensure all required fields exist
+    if (!Array.isArray(profile.conversions)) profile.conversions = [];
+    if (!Array.isArray(profile.favorites)) profile.favorites = [];
+    if (!Array.isArray(profile.atmSearches)) profile.atmSearches = [];
+    if (typeof profile.defaultFrom !== 'string') profile.defaultFrom = 'USD';
+    if (typeof profile.defaultTo !== 'string') profile.defaultTo = 'EUR';
+    if (typeof profile.defaultCountry !== 'string') profile.defaultCountry = '';
+    if (typeof profile.defaultCity !== 'string') profile.defaultCity = '';
+    if (typeof profile.darkMode !== 'boolean') profile.darkMode = false;
+    if (typeof profile.colorBlindMode !== 'string') profile.colorBlindMode = 'none';
+    if (typeof profile.language !== 'string') profile.language = 'en';
+    if (typeof profile.fontSize !== 'string') profile.fontSize = 'normal';
+    if (typeof profile.highContrast !== 'boolean') profile.highContrast = false;
+    return profile;
     }
     function saveUserProfile(username, profile) {
         localStorage.setItem(`profile_${username}`, JSON.stringify(profile));
